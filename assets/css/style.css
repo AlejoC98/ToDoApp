@@ -1,0 +1,109 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Rubik", sans-serif;
+}
+
+header {
+  background-color: #19647E;
+  color: #ffffff;
+  padding: 10px 30px;
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+}
+header .menu {
+  display: inline-flex;
+  position: absolute;
+  right: 15px;
+  top: 14px;
+  list-style: none;
+}
+header .menu li {
+  font-size: 20px;
+  padding: 8px 10px;
+}
+header .menu li:hover {
+  background-color: #0e3c4b;
+}
+header .menu a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.left-panel.collapsed {
+  width: 5% !important;
+  float: none;
+  display: flex;
+  justify-content: center;
+  transition: 0.5s;
+}
+.left-panel.collapsed input {
+  display: none;
+}
+
+.right-panel.collapsed {
+  width: 95%;
+  left: 5%;
+  transition: 0.5s;
+}
+
+.left-panel {
+  padding: 20px 0;
+  background: #134e62;
+  width: 25%;
+  position: absolute;
+  left: 0;
+  height: 100vh;
+  transition: 0.5s;
+}
+.left-panel .hamburguer-icon button.btn {
+  float: right;
+  color: #ffffff;
+  margin: 10px 5px;
+}
+.left-panel .hamburguer-icon button.btn:hover {
+  background-color: #0e3c4b;
+}
+.left-panel .list-input input {
+  border-radius: 0;
+}
+
+.right-panel {
+  position: absolute;
+  left: 25%;
+  width: 75%;
+  padding-top: 20px;
+  transition: 0.5s;
+}
+
+.completed-task li, .task-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.completed-task li span input, .task-list li span input {
+  margin-right: 20px;
+}
+
+.task-list .btn-delete {
+  float: right;
+}
+.task-list .btn-delete:hover {
+  color: red;
+}
+
+.completed-task {
+  margin-top: 200px;
+  display: none;
+  transition: 0.5s;
+}
+.completed-task li {
+  color: #747474;
+}
+.completed-task li button {
+  display: none;
+}
+
+/*# sourceMappingURL=style.css.map */

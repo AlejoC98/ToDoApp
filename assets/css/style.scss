@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+// Changing default website styles
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Rubik', sans-serif;
+}
+
+// Global Variables
+$main-color: #19647E;
+$main-hover-color: #0e3c4b;
+
+
+header {
+    background-color: $main-color;
+    color: #ffffff;
+    padding: 10px 30px;
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    .menu {
+        // float: right;
+        display: inline-flex;
+        position: absolute;
+        right: 15px;
+        top: 14px;
+        li {
+            font-size: 20px;
+            padding: 8px 10px;
+        }
+
+        li:hover {
+            background-color: $main-hover-color;
+        }
+
+        list-style: none;
+        a { text-decoration: none; color: #ffffff; }
+
+    }
+
+}
+
+.left-panel.collapsed {
+    width: 5% !important;
+    float: none;
+    display: flex;
+    justify-content: center;
+    transition: 0.5s;
+    input {
+        display: none;
+    }
+}
+
+.right-panel.collapsed {
+    width: 95%;
+    left: 5%;
+    transition: 0.5s;
+}
+
+.left-panel {
+    padding: 20px 0;
+    background: #134e62;
+    width: 25%;
+    position: absolute;
+    left: 0;
+    height: 100vh;
+    transition: 0.5s;
+    .hamburguer-icon {
+        button.btn {
+            float: right;
+            color: #ffffff;
+            margin: 10px 5px;
+        }
+        button.btn:hover {
+            background-color: $main-hover-color;
+        }
+    }
+    
+
+    .list-input {
+        input { border-radius: 0;}
+    }
+}
+
+.right-panel {
+    position: absolute;
+    left: 25%;
+    width: 75%;
+    padding-top: 20px;
+    transition: 0.5s;
+}
+
+%li-element {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span {
+        input {
+            margin-right: 20px;
+        }
+    }
+}
+
+.task-list {
+
+    li {
+        @extend %li-element;
+    }
+
+    .btn-delete {
+        float: right;
+    }
+
+    .btn-delete:hover {
+        color: red;
+    }
+
+}
+
+
+.completed-task {
+    margin-top: 200px;
+    // color: #747474;
+    display: none;
+    transition: 0.5s;
+    
+    li {
+        color: #747474;
+        @extend %li-element;
+
+        button {
+            display: none;
+        }
+    }
+
+}
