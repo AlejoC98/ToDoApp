@@ -1,8 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
-* {
+.completed-task li, .task-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.completed-task li .check-box input, .task-list li .check-box input {
+  margin-right: 20px;
+}
+
+.btn-theme {
+  background: #FF785A;
+  border: #FF785A;
+  color: #fff;
+}
+
+.btn-theme:hover {
+  background: #fd5731;
+  color: #fff;
+}
+
+html,
+body {
   margin: 0;
   padding: 0;
   font-family: "Rubik", sans-serif;
+  background-color: #fbfdf6;
 }
 
 header {
@@ -58,16 +80,33 @@ header .menu a {
   height: 100vh;
   transition: 0.5s;
 }
+.left-panel .hamburguer-icon {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+}
 .left-panel .hamburguer-icon button.btn {
-  float: right;
   color: #ffffff;
   margin: 10px 5px;
 }
 .left-panel .hamburguer-icon button.btn:hover {
   background-color: #0e3c4b;
 }
-.left-panel .list-input input {
-  border-radius: 0;
+.left-panel .task-list {
+  list-style: none;
+  padding: 0;
+}
+.left-panel .task-list li {
+  padding: 10px 20px;
+  width: 100%;
+}
+.left-panel .task-list li:hover {
+  background: #0e3c4b;
+  cursor: pointer;
+}
+.left-panel .task-list a {
+  text-decoration: none;
+  color: #fff;
 }
 
 .right-panel {
@@ -78,15 +117,9 @@ header .menu a {
   transition: 0.5s;
 }
 
-.completed-task li, .task-list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.task-list button {
+  color: rgb(136, 136, 136);
 }
-.completed-task li span input, .task-list li span input {
-  margin-right: 20px;
-}
-
 .task-list .btn-delete {
   float: right;
 }
@@ -104,6 +137,24 @@ header .menu a {
 }
 .completed-task li button {
   display: none;
+}
+
+.btn-add-task {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  color: #fff;
+  border-radius: 50px;
+}
+
+#addTaskListModal .modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row.tasks {
+  margin-top: 30px;
 }
 
 /*# sourceMappingURL=style.css.map */

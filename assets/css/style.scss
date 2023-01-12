@@ -1,15 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
-// Changing default website styles
-* {
-    margin: 0;
-    padding: 0;
-    font-family: 'Rubik', sans-serif;
-}
 
 // Global Variables
 $main-color: #19647E;
 $main-hover-color: #0e3c4b;
+$bg: #fbfdf6;
+$btn-primary: #FF785A;
+$btn-primary-hover: #fd5731;
 
+// Base Classes Styles
+%li-element {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .check-box {
+        input {
+            margin-right: 20px;
+        }
+    }
+}
+
+.btn-theme {
+    background: $btn-primary;
+    border: $btn-primary;
+    color: #fff;
+}
+
+.btn-theme:hover {
+    background: $btn-primary-hover;
+    color: #fff;
+}
+
+// Changing default website styles
+html, 
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Rubik', sans-serif;
+    background-color: $bg;
+}
 
 header {
     background-color: $main-color;
@@ -66,8 +95,10 @@ header {
     height: 100vh;
     transition: 0.5s;
     .hamburguer-icon {
+        display: flex;
+        width: 100%;
+        justify-content: end;
         button.btn {
-            float: right;
             color: #ffffff;
             margin: 10px 5px;
         }
@@ -76,10 +107,26 @@ header {
         }
     }
     
+    .task-list {
+        list-style: none;
+        padding: 0;
+        li {
+            padding: 10px 20px;
+            // background-color: red;
+            width: 100%;
+        }
 
-    .list-input {
-        input { border-radius: 0;}
+        li:hover {
+            background: #0e3c4b;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
     }
+    
 }
 
 .right-panel {
@@ -88,24 +135,17 @@ header {
     width: 75%;
     padding-top: 20px;
     transition: 0.5s;
-}
-
-%li-element {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    span {
-        input {
-            margin-right: 20px;
-        }
-    }
+    // opacity: 0;
 }
 
 .task-list {
 
     li {
         @extend %li-element;
+    }
+
+    button {
+        color: rgb(136, 136, 136);
     }
 
     .btn-delete {
@@ -117,7 +157,6 @@ header {
     }
 
 }
-
 
 .completed-task {
     margin-top: 200px;
@@ -134,4 +173,22 @@ header {
         }
     }
 
+}
+
+.btn-add-task {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    color: #fff;
+    border-radius: 50px;
+}
+
+#addTaskListModal .modal-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.row.tasks {
+    margin-top: 30px;
 }

@@ -9,6 +9,7 @@
     <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js' integrity='sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN' crossorigin='anonymous'></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- Javascript Links -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script src='https://kit.fontawesome.com/a436aa1a7a.js' crossorigin='anonymous'></script>
     <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js' integrity='sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3' crossorigin='anonymous'></script>
     <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js' integrity='sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD' crossorigin='anonymous'></script>
@@ -38,21 +39,62 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
-            <div class="list-input">
-                <input type="text" id="taskCreator" class="form-control" placeholder="Enter List Name...">
-            </div>
+            <ul class="task-list">
+            </ul>
         </div>
         <div class="right-panel container-fluid">
-            <h1>Create a task</h1>
-            <hr>
-            <div class="tasks-container">
-                <ul class="list-group task-list" id="taskList"></ul>
-            </div>
-            <div class="completed-task">
-                <h1>Completed Task</h1>
+            <section>
+                <h1 id="listTitle"></h1>
                 <hr>
-                <div class="task-container">
-                    <ul class="list-group task-completed-list" id="taskList"></ul>
+                <div class="row">
+                    <div class="col">
+                        <input type="text" placeholder="Search Task..." class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="text" placeholder="Create Task.." class="form-control" id="newTask">
+                    </div>
+                </div>
+                <div class="row tasks">
+                    <div class="col">
+                        <div class="tasks-container">
+                            <ul class="list-group task-list" id="taskList">
+                                <li class="list-group-item" id="task-Bacon">
+                                    <div class="check-box">
+                                        <input type="checkbox" onclick="completedTask('task-Bacon')">Bacon
+                                    </div>
+                                    <div class="action-btn">
+                                        <button class="btn btn-delete" onclick="deleteTask('task-Bacon')">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                        <button class="btn btn-edit" onclick="editTask()">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <button class="btn btn-theme btn-add-task" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Create New Task List." onclick="openModal()">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+        <div class="modal fade" id="addTaskListModal" tabindex="-1" aria-labelledby="addTaskListModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addTaskListModalLabel">Create Task List!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="createList" class="form-label">List Name:</label>
+                    <input id="createList" type="text" class="form-control" placeholder="List...">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-theme" onclick="createTaskList()">Create</button>
+                </div>
                 </div>
             </div>
         </div>
