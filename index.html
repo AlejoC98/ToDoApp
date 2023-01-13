@@ -52,27 +52,15 @@
                         <input type="text" placeholder="Search Task..." class="form-control" id="searchTask" onkeyup="searchTask()">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Create Task.." class="form-control" onkeypress="createTask()">
+                        <form action="/" id="newTaskForm">
+                            <input type="text" placeholder="Create Task.." class="form-control" id="newTask">
+                        </form>
                     </div>
                 </div>
                 <div class="row tasks">
                     <div class="col">
                         <div class="tasks-container">
-                            <ul class="list-group task-list" id="taskList">
-                                <li class="list-group-item" id="task-Bacon">
-                                    <div class="check-box">
-                                        <input type="checkbox" onclick="checkTask('task-Bacon')">Bacon
-                                    </div>
-                                    <div class="action-btn">
-                                        <button class="btn btn-delete" onclick="deleteTask('task-Bacon')">
-                                            <i class="fa-solid fa-xmark"></i>
-                                        </button>
-                                        <button class="btn btn-edit" onclick="editTask()">
-                                            <i class="fa-solid fa-pencil"></i>
-                                        </button>
-                                    </div>
-                                </li>
-                            </ul>
+                            <ul class="list-group task-list" id="taskList"></ul>
                         </div>
                     </div>
                 </div>
