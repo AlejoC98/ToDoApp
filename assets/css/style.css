@@ -60,6 +60,10 @@ header .menu a {
   justify-content: center;
   transition: 0.5s;
 }
+.left-panel.collapsed .hamburguer-icon {
+  right: unset;
+  justify-content: center;
+}
 .left-panel.collapsed .task-list {
   overflow-x: hidden;
   margin-top: 60px;
@@ -85,7 +89,7 @@ header .menu a {
 }
 .left-panel .hamburguer-icon {
   position: absolute;
-  right: 4px;
+  right: 5px;
   display: flex;
   width: 100%;
   justify-content: end;
@@ -121,7 +125,6 @@ header .menu a {
   width: 80%;
   padding-top: 20px;
   transition: 0.5s;
-  opacity: 0;
 }
 .right-panel .tasks-container {
   max-height: 300px;

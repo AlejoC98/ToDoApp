@@ -75,6 +75,11 @@ header {
     justify-content: center;
     transition: 0.5s;
 
+    .hamburguer-icon {
+        right: unset;
+        justify-content: center;
+    }
+
     .task-list {
         overflow-x: hidden;
         margin-top: 60px;
@@ -102,7 +107,7 @@ header {
     transition: 0.5s;
     .hamburguer-icon {
         position: absolute;
-        right: 4px;
+        right: 5px;
         display: flex;
         width: 100%;
         justify-content: end;
@@ -143,7 +148,7 @@ header {
     width: 80%;
     padding-top: 20px;
     transition: 0.5s;
-    opacity: 0;
+    // opacity: 0;
 
     .tasks-container {
         max-height: 300px;
