@@ -64,7 +64,7 @@ function createTaskList() {
 
     loadMenu();
 
-    updateTaskLocalStorage(tasks);
+    updateTaskLocalStorage(listInput.value);
 
 }
 
@@ -161,8 +161,9 @@ function searchTask() {
 
 }
 
-function updateTaskLocalStorage(data) {
-    localStorage.setItem(data);
+function updateTaskLocalStorage(key, value = []) {
+
+    localStorage.setItem(key, value);
 }
 
 function createTask() {
@@ -194,6 +195,10 @@ function createTask() {
 
         event.target.value = "";
 
-        updateTaskLocalStorage(tasks);
+        // Checking local data
+        if (storageTask = localStorage.getItem(listName) != null)
+            storageTask.push(task)
+
+        updateTaskLocalStorage(listName, storageTask);
     }
 }

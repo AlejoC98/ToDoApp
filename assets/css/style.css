@@ -60,11 +60,12 @@ header .menu a {
   justify-content: center;
   transition: 0.5s;
 }
-.left-panel.collapsed .hamburguer-icon {
-  display: inline;
-}
 .left-panel.collapsed .task-list {
-  display: inline;
+  overflow-x: hidden;
+  margin-top: 60px;
+}
+.left-panel.collapsed .task-list li {
+  padding: 10px 0;
 }
 
 .right-panel.collapsed {
@@ -83,7 +84,8 @@ header .menu a {
   transition: 0.5s;
 }
 .left-panel .hamburguer-icon {
-  right: 10px;
+  position: absolute;
+  right: 4px;
   display: flex;
   width: 100%;
   justify-content: end;
@@ -96,6 +98,7 @@ header .menu a {
   background-color: #0e3c4b;
 }
 .left-panel .task-list {
+  margin-top: 60px;
   list-style: none;
   padding: 0;
 }
@@ -119,6 +122,10 @@ header .menu a {
   padding-top: 20px;
   transition: 0.5s;
   opacity: 0;
+}
+.right-panel .tasks-container {
+  max-height: 300px;
+  overflow-y: scroll;
 }
 .right-panel .completed-task-container {
   margin-top: 150px;

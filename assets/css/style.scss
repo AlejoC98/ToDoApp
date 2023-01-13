@@ -74,12 +74,14 @@ header {
     display: flex;
     justify-content: center;
     transition: 0.5s;
-    .hamburguer-icon {
-        display: inline;
-    }
 
     .task-list {
-        display: inline;
+        overflow-x: hidden;
+        margin-top: 60px;
+        
+        li {
+            padding: 10px 0;
+        }
     }
 
 }
@@ -99,8 +101,8 @@ header {
     height: 100vh;
     transition: 0.5s;
     .hamburguer-icon {
-        // position: absolute;
-        right: 10px;
+        position: absolute;
+        right: 4px;
         display: flex;
         width: 100%;
         justify-content: end;
@@ -114,6 +116,7 @@ header {
     }
     
     .task-list {
+        margin-top: 60px;
         list-style: none;
         padding: 0;
         li {
@@ -142,8 +145,14 @@ header {
     transition: 0.5s;
     opacity: 0;
 
+    .tasks-container {
+        max-height: 300px;
+        overflow-y: scroll;
+    }
+
     .completed-task-container {
         margin-top: 150px;
+
     }
 
 }
