@@ -71,13 +71,17 @@ header {
 
 .left-panel.collapsed {
     width: 5% !important;
-    float: none;
     display: flex;
     justify-content: center;
     transition: 0.5s;
-    input {
-        display: none;
+    .hamburguer-icon {
+        display: inline;
     }
+
+    .task-list {
+        display: inline;
+    }
+
 }
 
 .right-panel.collapsed {
@@ -89,12 +93,14 @@ header {
 .left-panel {
     padding: 20px 0;
     background: #134e62;
-    width: 25%;
+    width: 20%;
     position: absolute;
     left: 0;
     height: 100vh;
     transition: 0.5s;
     .hamburguer-icon {
+        position: absolute;
+        right: 10px;
         display: flex;
         width: 100%;
         justify-content: end;
@@ -112,7 +118,6 @@ header {
         padding: 0;
         li {
             padding: 10px 20px;
-            // background-color: red;
             width: 100%;
         }
 
@@ -126,16 +131,21 @@ header {
             color: #fff;
         }
     }
-    
+
 }
 
 .right-panel {
     position: absolute;
-    left: 25%;
-    width: 75%;
+    left: 20%;
+    width: 80%;
     padding-top: 20px;
     transition: 0.5s;
-    // opacity: 0;
+    opacity: 0;
+
+    .completed-task-container {
+        margin-top: 150px;
+    }
+
 }
 
 .task-list {
@@ -182,6 +192,12 @@ header {
     padding: 15px 20px;
     color: #fff;
     border-radius: 50px;
+    transition: 0.1s;
+}
+
+.btn-add-task:hover {
+    padding: 17px 22px;
+    transition: 0.1s;
 }
 
 #addTaskListModal .modal-footer {

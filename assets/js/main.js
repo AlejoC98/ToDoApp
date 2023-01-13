@@ -6,20 +6,19 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 // Global vars
 const tasks = {};
 
+const completedListEle = document.querySelector("#completedTaskList");
+const currentTaskEle = document.querySelector("#taskList");
+
 let listName;
 let taskEle;
 
 function collapseMenu() {
+    $(".left-panel, .right-panel").toggleClass("collapsed");
 
-    var leftpanel = document.querySelector(".left-panel");
-    var rightpanel = document.querySelector(".right-panel");
-    
-    if (leftpanel.classList.contains("collapsed")) {
-        leftpanel.classList.remove("collapsed");
-        rightpanel.classList.remove("collapsed");
-    } else {
-        leftpanel.classList.add("collapsed");
-        rightpanel.classList.add("collapsed");
+    if ($(".left-panel, .right-panel").hasClass("collapsed")){
+        $(this).find("li a").each(function(index, ele) {
+            console.log(ele);
+        });
     }
 }
 
@@ -65,6 +64,8 @@ function createTaskList() {
 
     loadMenu();
 
+    updateTaskLocalStorage(tasks);
+
 }
 
 function deleteTask(task) {
@@ -106,16 +107,69 @@ function updateTask(current) {
             }
             
     if (resetSatus == true)
-        taskEle.querySelector(".check-box").innerHTML = '<input type="checkbox" onclick="completedTask(\'task-'+ taskEle.id +'\')">' + newTaskName;
+        taskEle.querySelector(".check-box").innerHTML = '<input type="checkbox" onclick="checkTask(\'task-'+ taskEle.id +'\')">' + newTaskName;
     
 
 }
 
-document.getElementById("newTask").addEventListener("keypress", function(e) {
-    if (e.key === "Enter" && e.target.value != "" && e.target.value != undefined) {
+function checkTask(task) {
+
+    
+    taskEle = document.getElementById(task);
+
+    if (event.target.checked) {
+        taskEle.style.textDecoration = "line-through";
+        completedListEle.append(taskEle);
+    } else {
+        taskEle.style.textDecoration = "none";
+        currentTaskEle.append(taskEle);
+    }
+
+
+}
+
+$("#searchTask").on("focus", function(){
+    $(currentTaskEle).find("li").css("display", "none");
+    $(completedListEle).find("li").css("display", "none");
+});
+
+$("#searchTask").on("blur", function(){
+    $(currentTaskEle).find("li").css("display", "flex");
+    $(completedListEle).find("li").css("display", "flex");
+});
+
+function searchTask() {
+    var keyWord = event.target.value;
+    
+    $(currentTaskEle).find("li .check-box").each((index, ele) => {
+        if (keyWord != "") {
+            if ($(ele).text().includes(keyWord))
+                $(ele).parent().fadeIn("fast");
+        } else {
+            $(ele).parent().fadeIn("fast");
+        }
+    });
+    
+    $(completedListEle).find("li .check-box").each((index, ele) => {
+        if (keyWord != "") {
+            if ($(ele).text().includes(keyWord))
+                $(ele).parent().fadeIn("fast");
+        } else {
+            $(ele).parent().fadeIn("fast");
+        }
+    });
+
+}
+
+function updateTaskLocalStorage(data) {
+    localStorage.setItem(data);
+}
+
+function createTask() {
+    if (event.key === "Enter" && event.target.value != "" && event.target.value != undefined) {
         
         var task = {
-            "name" : e.target.value,
+            "name" : event.target.value,
             "status" : "active",
         }
 
@@ -123,7 +177,7 @@ document.getElementById("newTask").addEventListener("keypress", function(e) {
 
         var taskElement = '<li class="list-group-item" id="task-'+ task.name +'">' +
         '<div class="check-box">' +
-        '<input type="checkbox" onclick="completedTask(\'task-'+ task.name +'\')">' +
+        '<input type="checkbox" onclick="checkTask(\'task-'+ task.name +'\')">' +
         task.name +
         '</div>' +
         '<div class="action-btn">' +
@@ -138,7 +192,8 @@ document.getElementById("newTask").addEventListener("keypress", function(e) {
 
         document.querySelector("#taskList").insertAdjacentHTML("afterbegin", taskElement);
 
-        e.target.value = "";
+        event.target.value = "";
 
+        updateTaskLocalStorage(tasks);
     }
-});
+}

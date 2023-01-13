@@ -33,7 +33,7 @@
         </ul>
     </header>
     <div class="container-fluid">
-        <div class="left-panel container-fluid">
+        <div class="left-panel collapsed container-fluid">
             <div class="hamburguer-icon">
                 <button class="btn" id="menu-btn" onclick="collapseMenu()">
                     <i class="fa-solid fa-bars"></i>
@@ -42,16 +42,16 @@
             <ul class="task-list">
             </ul>
         </div>
-        <div class="right-panel container-fluid">
-            <section>
+        <div class="right-panel collapsed container-fluid">
+            <div class="task-container">
                 <h1 id="listTitle"></h1>
                 <hr>
                 <div class="row">
                     <div class="col">
-                        <input type="text" placeholder="Search Task..." class="form-control">
+                        <input type="text" placeholder="Search Task..." class="form-control" id="searchTask" onkeyup="searchTask()">
                     </div>
                     <div class="col">
-                        <input type="text" placeholder="Create Task.." class="form-control" id="newTask">
+                        <input type="text" placeholder="Create Task.." class="form-control" onkeypress="createTask()">
                     </div>
                 </div>
                 <div class="row tasks">
@@ -60,7 +60,7 @@
                             <ul class="list-group task-list" id="taskList">
                                 <li class="list-group-item" id="task-Bacon">
                                     <div class="check-box">
-                                        <input type="checkbox" onclick="completedTask('task-Bacon')">Bacon
+                                        <input type="checkbox" onclick="checkTask('task-Bacon')">Bacon
                                     </div>
                                     <div class="action-btn">
                                         <button class="btn btn-delete" onclick="deleteTask('task-Bacon')">
@@ -75,7 +75,16 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+            <div class="completed-task-container">
+                <h1>Completed</h1>
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        <ul class="list-group task-list" id="completedTaskList"></ul>
+                    </div>
+                </div>
+            </div>
         </div>
         <button class="btn btn-theme btn-add-task" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Create New Task List." onclick="openModal()">
             <i class="fa-solid fa-plus"></i>

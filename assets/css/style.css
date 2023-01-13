@@ -56,13 +56,15 @@ header .menu a {
 
 .left-panel.collapsed {
   width: 5% !important;
-  float: none;
   display: flex;
   justify-content: center;
   transition: 0.5s;
 }
-.left-panel.collapsed input {
-  display: none;
+.left-panel.collapsed .hamburguer-icon {
+  display: inline;
+}
+.left-panel.collapsed .task-list {
+  display: inline;
 }
 
 .right-panel.collapsed {
@@ -74,13 +76,15 @@ header .menu a {
 .left-panel {
   padding: 20px 0;
   background: #134e62;
-  width: 25%;
+  width: 20%;
   position: absolute;
   left: 0;
   height: 100vh;
   transition: 0.5s;
 }
 .left-panel .hamburguer-icon {
+  position: absolute;
+  right: 10px;
   display: flex;
   width: 100%;
   justify-content: end;
@@ -111,10 +115,14 @@ header .menu a {
 
 .right-panel {
   position: absolute;
-  left: 25%;
-  width: 75%;
+  left: 20%;
+  width: 80%;
   padding-top: 20px;
   transition: 0.5s;
+  opacity: 0;
+}
+.right-panel .completed-task-container {
+  margin-top: 150px;
 }
 
 .task-list button {
@@ -146,6 +154,12 @@ header .menu a {
   padding: 15px 20px;
   color: #fff;
   border-radius: 50px;
+  transition: 0.1s;
+}
+
+.btn-add-task:hover {
+  padding: 17px 22px;
+  transition: 0.1s;
 }
 
 #addTaskListModal .modal-footer {
