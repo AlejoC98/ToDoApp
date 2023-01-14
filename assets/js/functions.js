@@ -25,16 +25,38 @@ function createListEle(id, list) {
     document.querySelector(list).insertAdjacentHTML("afterbegin", element);
 }
 
+function createErrorMg(id, mg, color) {
+    $(id).addClass("text-" + color).text(mg);
+    setTimeout(() => {
+        $(id).text("");
+    }, 4000);
+}
+
 function createList(list) {
-    var insertItem = {};
-    insertItem[list] = [];
-    // Close Modal
-    $("#addTaskListModal").modal("toggle");
-    localContent.push(insertItem);
-    // Create Menu Item
-    createMenuItem([list]);
-    // Updating localStorage
-    updateLocalContent();
+
+    var status = false;
+
+    if (localContent.length > 0)
+        localContent.find((t) => {
+            (!Object.keys(t).includes(list.value)) ? status = true : status;
+        });
+    else
+        status = true;
+
+    if (status == true) {
+        var insertItem = {};
+        insertItem[list.value] = [];
+        // Close Modal
+        $("#addTaskListModal").modal("toggle");
+        localContent.push(insertItem);
+        // Create Menu Item
+        createMenuItem([list.value]);
+        // Updating localStorage
+        updateLocalContent();
+        list.value = "";
+    } else {
+       return status;
+    }
 }
 
 function createMenuItem(list) {
@@ -47,6 +69,31 @@ function createMenuItem(list) {
     }
 }
 
+function loadMenu() {
+    var list = [];
+
+    if (localContent.length > 0) {
+        localContent.find((t) => {
+            for (let listItem in t) {
+                if (!list.includes(listItem))
+                    list.push(listItem);
+            }
+        });
+        // Creating list li elements
+        createMenuItem(list);
+    }
+}
+
+function loadListTasks() {
+    localContent.find((task) => {
+        task[currentList].map((element, index) => {
+            var listEle = "";
+            (element.status == "active") ? listEle = "#taskList" : listEle = "#completedTaskList";
+            createListEle(element.name, listEle);
+        });
+    });
+}
+
 function openMenuItem(element) {
     var listName = element.target.innerText;
     var listTask = [];
@@ -56,15 +103,15 @@ function openMenuItem(element) {
                 listTask = element[listName];
     });
 
-    // Checking if this list already has tasks
-    if (listTask.length > 0)
-        // Here i will have a loop
-        console.log();
-
-    $("#listTitle").text(listName);
-    $(".right-panel").css("opacity", "100");
-    
-    currentList = listName;
+    if (listTask.length > 0) {
+        currentList = listName;
+        // Checking if this list already has tasks
+        if (listTask.length > 0)
+            // Here i will have a loop
+            loadListTasks();
+        $("#listTitle").text(listName);
+        $(".right-panel").css("opacity", "100");
+    }
 }
 
 function getDate() {
@@ -72,28 +119,77 @@ function getDate() {
 }
 
 function createTask(input) {
+
+    var status = false;
+
     // Checking if object list containd the current list
     if (list = localContent.find((x) => Object.keys(x).includes(currentList) ))
         // Going through Task object
         list[currentList].map((task, index) => {
             // Checking if task already exist and returning and error
-            if (task.name == input.value)
-                return "error";
+            if (task.name != input.value)
+                status = true;
         });
-    // Creating task object
-    var task = {
-        "name" : input.value,
-        "status" : "active",
-        "date" : getDate()
+    
+    if (status == true) {
+        // Creating task object
+        var task = {
+            "name" : input.value,
+            "status" : "active",
+            "date" : getDate()
+        }
+        // Updating localContent
+        localContent.find((t) => {
+            t[currentList].push(task);
+        });
+    
+        // Creating task li element
+        createListEle(task.name, "#taskList");
+    
+        // Updating localStorage
+        updateLocalContent();
+    } else {
+        return status;
     }
-    // Updating localContent
-    localContent.find((t) => {
-        t[currentList].push(task);
-    });
 
-    // Creating task li element
-    createListEle(task.name, "#taskList");
+}
 
-    // Updating localStorage
-    updateLocalContent();
+function editTask(task) {
+    // saving current text
+    var currentTask = task.querySelector(".check-box").innerText;
+    // Removing current text
+    task.querySelector(".check-box").innerText = "";
+
+
+    $(task).find(".check-box").append('<input type="text" value="'+ currentTask +'" class="form-control">');
+
+}
+
+function updateTask(current) {
+
+    console.log(current);
+
+    var newTaskName = event.target.value;
+
+    var resetSatus = false;
+
+    switch (event.key) {
+        case "Enter":
+            for (let task of tasks[listName]) {
+                (task.name === current) ? task.name = newTaskName : task.name;
+            }
+            resetSatus = true;
+            break;
+        case "Escape":
+            newTaskName = current;
+            resetSatus = true;
+            break;
+            default:
+                break;
+            }
+            
+    if (resetSatus == true)
+        taskEle.querySelector(".check-box").innerHTML = '<input type="checkbox" onclick="checkTask(\'task-'+ taskEle.id +'\')">' + newTaskName;
+    
+
 }

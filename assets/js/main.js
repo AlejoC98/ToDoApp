@@ -10,13 +10,14 @@ const panel = document.querySelector("#task_list");
 let localContent = Array();
 let currentList = '';
 
-if (localStorage.getItem("Lists") != null && JSON.parse(localStorage.getItem("List")) != null)
-    localContent = JSON.parse(localStorage.getItem("List"));
+if (localStorage.getItem("Lists") != null && JSON.parse(localStorage.getItem("Lists")) != null)
+    localContent = JSON.parse(localStorage.getItem("Lists"));
 else
     localStorage.setItem("Lists", "[]");
 
 $(document).ready(function() {
 
+    loadMenu();
 
     // Event for the modal
     $("#modal_btn").on("click", function() {
@@ -26,24 +27,43 @@ $(document).ready(function() {
     // Catch New list change
     $("#newListForm").on("submit", function(){
         event.preventDefault();
-        createList($(event.target).find("input").val());
-        getLocalInfo();
+        if (createList(event.target.querySelector("input")) == false) {
+            createErrorMg("#newListMg", "List already exist!", "danger");
+        } else {
+            getLocalInfo();
+        }
     });
 
     // Open List Tasks
     $("ul#task_list").on("click", "li", function(li) {
         openMenuItem(li);
-        // getLocalInfo();
     });
     // Checking when the user wants to create a task
     $("#newTaskForm").on("submit", function() {
         event.preventDefault();
-        createTask(event.target.querySelector("input"));
-        // getLocalInfo();
+        if (createTask(event.target.querySelector("input")) == false)
+            createErrorMg("#newTaksMg", "Task already exist!", "danger");
+        else
+            event.target.querySelector("input").value = "";
     });
 
-    $("#taskList").on("click", ".check-box input, .btn-delete, .btn-edit", function(){
-        alert("Sisaa");
+    $("#taskList").on("click", "input[type=checkbox], .btn-delete, .btn-edit", function() {
+
+        var taskId = $(event.target).parents("li")[0];
+
+        switch (event.target.className) {
+            case 'btn btn-delete':
+            case 'fa-solid fa-xmark':
+                console.log("deleting");
+                break;
+            case 'btn btn-edit':
+            case 'fa-solid fa-pencil':
+                editTask(taskId);
+                break;
+            default:
+                console.log("checkboc");
+                break;
+        }
     });
 
 });
