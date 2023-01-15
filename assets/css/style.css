@@ -8,14 +8,25 @@
   margin-right: 20px;
 }
 
-.btn-theme {
+.btn-theme-primary {
   background: #FF785A;
   border: #FF785A;
   color: #fff;
 }
 
-.btn-theme:hover {
+.btn-theme-primary:hover {
   background: #fd5731;
+  color: #fff;
+}
+
+.btn-theme-secondary {
+  background: #92140c;
+  border: #92140c;
+  color: #fff;
+}
+
+.btn-theme-secondary:hover {
+  background: #b31a0f;
   color: #fff;
 }
 
@@ -55,7 +66,7 @@ header .menu a {
 }
 
 .left-panel.collapsed {
-  width: 5% !important;
+  width: 50px !important;
   display: flex;
   justify-content: center;
   transition: 0.5s;
@@ -65,7 +76,6 @@ header .menu a {
   justify-content: center;
 }
 .left-panel.collapsed .task-list {
-  overflow-x: hidden;
   margin-top: 60px;
   width: 100%;
 }
@@ -74,15 +84,15 @@ header .menu a {
 }
 
 .right-panel.collapsed {
-  width: 95%;
-  left: 5%;
+  width: calc(100% - 50px);
+  left: 50px;
   transition: 0.5s;
 }
 
 .left-panel {
   padding: 20px 0;
   background: #134e62;
-  width: 20%;
+  width: 200px;
   position: absolute;
   left: 0;
   height: 100vh;
@@ -122,18 +132,41 @@ header .menu a {
 
 .right-panel {
   position: absolute;
-  left: 20%;
-  width: 80%;
+  left: 200px;
+  width: calc(100% - 200px);
   padding-top: 20px;
   transition: 0.5s;
-  opacity: 0;
+}
+.right-panel .welcome-ms {
+  text-align: center;
+  color: rgb(129, 129, 129);
+  height: 50vh;
+  display: grid;
+  transition: 0, 3s;
+  align-items: center;
+}
+.right-panel .welcome-ms h1 {
+  font-size: 90px;
+}
+.right-panel .main {
+  display: none;
+  transition: 0, 3s;
+}
+.right-panel .container-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 .right-panel .tasks-container {
-  max-height: 300px;
+  max-height: 280px;
+  min-height: 280px;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 .right-panel .completed-task-container {
-  margin-top: 150px;
+  position: relative;
+  top: 50px;
+  overflow-x: hidden;
 }
 
 .task-list button {
@@ -173,13 +206,27 @@ header .menu a {
   transition: 0.1s;
 }
 
-#addTaskListModal .modal-footer {
+.modal .modal-footer {
   display: flex;
   justify-content: space-between;
 }
 
 .row.tasks {
   margin-top: 30px;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: rgb(134, 134, 134);
+}
+
+.bordered {
+  border: 1px solid #dee2e6 !important;
+  border-radius: inherit;
+}
+
+.fm-text {
+  position: absolute;
 }
 
 /*# sourceMappingURL=style.css.map */

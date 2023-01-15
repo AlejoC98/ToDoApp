@@ -6,10 +6,10 @@ function updateLocalContent() {
     localStorage.setItem("Lists", JSON.stringify(localContent));
 }
 
-function createListEle(id, list) {
-    var element = '<li class="list-group-item" id="task-'+ id +'">' +
+function createListEle(id, list, status = "", className = "") {
+    var element = '<li class="list-group-item animate__animated '+ className +'" id="task-'+ id +'">' +
         '<div class="check-box">' +
-        '<input type="checkbox" id="checkTask-'+ id +'">' +
+        '<input '+ status +' type="checkbox" id="checkTask-'+ id +'">' +
         id +
         '</div>' +
         '<div class="action-btn">' +
@@ -22,7 +22,8 @@ function createListEle(id, list) {
         '</li>' +
         '</div>';
 
-    document.querySelector(list).insertAdjacentHTML("afterbegin", element);
+    // document.querySelector(list).insertAdjacentHTML("afterbegin", element);
+    $(list).append(element);
 }
 
 function createErrorMg(id, mg, color) {
@@ -30,6 +31,27 @@ function createErrorMg(id, mg, color) {
     setTimeout(() => {
         $(id).text("");
     }, 4000);
+}
+
+function collapseMenu(btn) {
+    let btnHamburger;
+    if (localContent.length > 0) {
+        $(".left-panel, .right-panel").toggleClass("collapsed");
+        var nPosition;
+        $(panel).find("li").each(function (index, element) {
+            var liName = element.id.split("-")[1];
+            if ($(".left-panel").hasClass("collapsed"))
+                liName = liName[0].toUpperCase();
+            $(element).find("a").text(liName);
+        });
+    } else {
+        $(btn).addClass("animate__shakeX");
+        btnHamburger = btn;
+        setTimeout(() => {
+            $(btnHamburger).removeClass("animate__shakeX");
+        }, 1000);
+    }
+
 }
 
 function createList(list) {
@@ -50,7 +72,7 @@ function createList(list) {
         $("#addTaskListModal").modal("toggle");
         localContent.push(insertItem);
         // Create Menu Item
-        createMenuItem([list.value]);
+        createMenuItem([list.value], "animate__animated animate__bounceInDown");
         // Updating localStorage
         updateLocalContent();
         list.value = "";
@@ -59,11 +81,19 @@ function createList(list) {
     }
 }
 
-function createMenuItem(list) {
+function createMenuItem(list, className = "") {
     // Looping the content to create a li for every item on the array
     for(l of list) {
+
+        var dname;
+
+        if ($(".left-panel").hasClass("collapsed"))
+            dname = l[0].toUpperCase();
+        else
+            dname = l;
+
         // Creating html element
-        var liEle = '<li id="list-'+ l +'" class="listItem"><a href="#"/>'+ l +'</li>';
+        var liEle = '<li id="list-'+ l +'" class="listItem '+ className +'"><a href="#"/>'+ dname +'</li>';
         // Adding li element to ul
         panel.insertAdjacentHTML("beforeend", liEle);
     }
@@ -86,17 +116,30 @@ function loadMenu() {
 
 function loadListTasks() {
     localContent.find((task) => {
-        task[currentList].map((element, index) => {
-            var listEle = "";
-            (element.status == "active") ? listEle = "#taskList" : listEle = "#completedTaskList";
-            createListEle(element.name, listEle);
-        });
+        if (currentList in task) 
+            task[currentList].map((element, index) => {
+                var ltask = {};
+                if (element.status == "active") {
+                    ltask["container"] = currentTaskEle;
+                    ltask["status"] = "";
+                    ltask["class"] = "";
+                } else {
+                    ltask["container"] = completedListEle;
+                    ltask["status"] = "checked";
+                    ltask["class"] = "completed";
+                }
+                createListEle(element.name, ltask["container"], ltask["status"], ltask["class"]);
+            });
     });
 }
 
 function openMenuItem(element) {
-    var listName = element.target.innerText;
+    var listName = element.currentTarget.id.split("-")[1];
     var listTask = [];
+
+    $(currentTaskEle).empty();
+    $(completedListEle).empty();
+
     localContent.map((element, index) => {
         if (listName in element)
             if (element[listName].length > 0)
@@ -109,7 +152,8 @@ function openMenuItem(element) {
         // Here i will have a loop
         loadListTasks();
     $("#listTitle").text(listName);
-    $(".right-panel").css("opacity", "100");
+    $(".welcome-ms").css("display", "none");
+    $(".main").css("display", "block");
 }
 
 function getDate() {
@@ -125,7 +169,8 @@ function createTask(input) {
         // Going through Task object
         list[currentList].map((task, index) => {
             // Checking if task already exist and returning and error
-            if (task.name == input.value)
+            var tName = task.name.toLowerCase();
+            if (tName == input.value.toLowerCase())
                 status = false;
         });
     
@@ -138,11 +183,12 @@ function createTask(input) {
         }
         // Updating localContent
         localContent.find((t) => {
-            t[currentList].push(task);
+            if (currentList in t)
+                t[currentList].push(task);
         });
     
         // Creating task li element
-        createListEle(task.name, "#taskList");
+        createListEle(task.name, "#taskList", "", "animate__backInDown animate__faster");
     
         // Updating localStorage
         updateLocalContent();
@@ -152,39 +198,107 @@ function createTask(input) {
 
 }
 
-function editTask(task) {
+function editTask(taskEle) {
     // saving current text
-    var currentTask = task.querySelector(".check-box").innerText;
+    var currentTask = taskEle.querySelector(".check-box").innerText;
     // Removing current text
-    task.querySelector(".check-box").innerText = "";
+    taskEle.querySelector(".check-box").innerText = "";
+    // Creating the input element to edit content and adding a keypress event to it.
+    $(taskEle).find(".check-box").append('<form action="/" id="updateForm"><input autofocus type="text" value="'+ currentTask +'" class="form-control"></form>');
 
+    $("#updateForm input").focus();
 
-    $(task).find(".check-box").append('<input type="text" value="'+ currentTask +'" class="form-control">').on("keypress", function() { updateTask(currentTask) });
+    $("#updateForm").on("submit", function() {
+        event.preventDefault();
+        updateTask(currentTask, $(event.target).find("input").val());
+    });
+    $(taskEle).on("blur", ".check-box input[type=text]", function() {
+        updateTask("", currentTask, false);
+    });
+}
+
+function deleteTask(taskEle) {
+    localContent.find((list, ind) => {
+        if (currentList in list)
+            list[currentList].map((task, index) => {
+                var tName = task.name.toLowerCase();
+                (tName === $(taskEle).text().toLowerCase()) ? list[currentList].splice(index, 1) : task;
+            });
+    });
+    $(taskEle).addClass("animate__backOutDown");
+    setTimeout(() => {
+        $(taskEle).remove();
+    }, 3000);
+    updateLocalContent();
+}
+
+function checkTask(taskEle) {
+
+    var ltask = {
+        "aClass": "animate__flipOutX",
+        "rClass" : "animate__flipInX"
+    };
+
+    if ($(taskEle).find("input").is(":checked")) {
+        ltask["status"] = "done";
+        ltask["container"] = completedListEle;
+    } else {
+        ltask["status"] = "active";
+        ltask["container"] = currentTaskEle;
+    }
+
+    localContent.find((list, ind) => {
+        if (currentList in list)
+            list[currentList].map((task, index) => {
+                var tName = task.name.toLowerCase();
+                (tName === $(taskEle).text().toLowerCase()) ? task.status = ltask["status"] : task;
+            });
+    });
+    $(taskEle).addClass(ltask["aClass"]).removeClass(ltask["rClass"]);
+    
+    setTimeout(() => {
+        $(taskEle).addClass(ltask["rClass"]).removeClass(ltask["aClass"]);
+        $(ltask["container"]).append(taskEle);
+    }, 1000);
+
+    $(taskEle).toggleClass("completed");
+    updateLocalContent();
+}
+
+function updateTask(current, newTaskName, status = true) {
+    if (status == true)
+        localContent.find((list) => {
+            if (currentList in list)
+                list[currentList].map((task, index) => {
+                    var tName = task.name.toLowerCase();
+                    (tName=== current.toLowerCase()) ? task.name = newTaskName : task;
+                });
+        });
+
+    $(event.target).parents(".check-box").append('<input type="checkbox">' + newTaskName);
+    $(event.target).remove();
+    updateLocalContent();
+}
+
+function searchTask(keyWord) {
+    localContent.find((lists) => {
+        if (currentList in lists)
+            lists[currentList].map((task, index) => {
+                var tName = task.name.toLowerCase();
+                (tName.includes(keyWord.toLowerCase())) ? $("#task-"+task.name).fadeIn() : $("#task-"+task.name).fadeOut();
+            });
+    });
 
 }
 
-function updateTask(current) {
+function deleteList() {
 
-    console.log(current);
-
-    var newTaskName = event.target.value;
-
-    var resetSatus = false;
-
-    switch (event.key) {
-        case "Enter":
-            for (let task of tasks[listName]) {
-                (task.name === current) ? task.name = newTaskName : task.name;
-            }
-            resetSatus = true;
-            break;
-        case "Escape":
-            newTaskName = current;
-            resetSatus = true;
-            break;
-            }
-            
-    if (resetSatus == true)
-        taskEle.querySelector(".check-box").innerHTML = '<input type="checkbox">' + newTaskName;
-
+    localContent.find((list, ind) => {
+        (currentList in list) ? localContent.splice(ind, 1) : list;
+    });
+    $("#deleteTaskListModal").modal("hide");
+    $(".modal-backdrop").remove();
+    $(".main").css("display", "0");
+    $("#list-" + currentList).fadeOut().remove();
+    updateLocalContent();
 }
