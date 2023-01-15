@@ -56,6 +56,7 @@
                     <div class="container-header">
                         <h1 id="listTitle"></h1>
                         <div class="list-action-btn">
+                            <button class="btn btn-theme-success" type="button" id="reset-date">Reset</button>
                             <button class="btn btn-theme-secondary" data-bs-toggle="modal" data-bs-target="#deleteTaskListModal">Delete</button>
                         </div>
                     </div>
@@ -71,21 +72,13 @@
                             </form>
                         </div>
                         <div class="col">
-                            <div class="row">
-                                <div class="col">
-                                    <!-- <input type="date" id="dateFilter" class="form-control"> -->
-                                    <div class="input-group mb-3">
-                                        <input type="date" class="form-control" aria-describedby="reset-date" id="dateFilter">
-                                        <button class="btn btn-theme-success" type="button" id="reset-date">Reset</button>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <select id="multi-filter" class="form-control">
-                                        <option>Filter By</option>
-                                        <option value="late">View Later</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <input type="date" class="form-control" aria-describedby="reset-date" id="dateFilter">
+                        </div>
+                        <div class="col">
+                            <select id="multi-filter" class="form-control">
+                                <option value="" selceted>Filter By</option>
+                                <option value="late">View Later</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row tasks">

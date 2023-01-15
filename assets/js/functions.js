@@ -66,28 +66,32 @@ function collapseMenu(btn) {
 
 }
 
-function createList(list) {
+function createList(listEle) {
 
     var status = false;
 
+    var lName = $(listEle).text().toLowerCase();
+
     if (localContent.length > 0)
-        localContent.find((t) => {
-            (!Object.keys(t).includes(list.value)) ? status = true : status;
+        localContent.find((list) => {
+            var listArray = Object.keys(list).map((l) => l.toLowerCase());
+            (lName in listArray) ? status = true : status;
+            // (!Object.keys(t).includes(list.value)) ? status = true : status;
         });
     else
         status = true;
 
     if (status == true) {
         var insertItem = {};
-        insertItem[list.value] = [];
+        insertItem[listEle.value] = [];
         // Close Modal
         $("#addTaskListModal").modal("toggle");
         localContent.push(insertItem);
         // Create Menu Item
-        createMenuItem([list.value], "animate__animated animate__bounceInDown");
+        createMenuItem([listEle.value], "animate__animated animate__bounceInDown");
         // Updating localStorage
         updateLocalContent();
-        list.value = "";
+        listEle.value = "";
     } else {
        return status;
     }
@@ -215,7 +219,10 @@ function createTask(input) {
 
 function editTask(taskEle) {
     // saving current text
-    var currentTask = taskEle.querySelector(".check-box").innerText;
+    // var currentTask = taskEle.querySelector(".check-box").innerText;
+    var currentTask = $(taskEle).find(".check-box span").text();
+    var currentTaskDate = $(taskEle).find(".check-box q").text();
+    var currentTaskSave = $(taskEle).find("label").attr("class").split(" ")[1];
     // Removing current text
     taskEle.querySelector(".check-box").innerText = "";
     // Creating the input element to edit content and adding a keypress event to it.
@@ -225,19 +232,20 @@ function editTask(taskEle) {
 
     $("#updateForm").on("submit", function() {
         event.preventDefault();
-        updateTask(currentTask, $(event.target).find("input").val());
+        updateTask(currentTask, $(event.target).find("input").val(), currentTaskDate, currentTaskSave);
     });
     $(taskEle).on("blur", ".check-box input[type=text]", function() {
-        updateTask("", currentTask, false);
+        updateTask("", currentTask, false, currentTaskDate, currentTaskSave);
     });
 }
 
 function deleteTask(taskEle) {
+    var lName = $(taskEle).find("span").text().toLowerCase();
     localContent.find((list, ind) => {
         if (currentList in list)
             list[currentList].map((task, index) => {
                 var tName = task.name.toLowerCase();
-                (tName === $(taskEle).text().toLowerCase()) ? list[currentList].splice(index, 1) : task;
+                (tName === lName) ? list[currentList].splice(index, 1) : task;
             });
     });
     $(taskEle).addClass("animate__backOutDown");
@@ -282,7 +290,7 @@ function checkTask(taskEle) {
     updateLocalContent();
 }
 
-function updateTask(current, newTaskName, status = true) {
+function updateTask(current, newTaskName, status = true, date, save) {
     if (status == true)
         localContent.find((list) => {
             if (currentList in list)
@@ -291,8 +299,14 @@ function updateTask(current, newTaskName, status = true) {
                     (tName=== current.toLowerCase()) ? task.name = newTaskName : task;
                 });
         });
+    
+    var saveItem;
+    
+    (save === "saved") ? saveItem = '<i class="fa-solid fa-bookmark"></i>' : saveItem = '<i class="fa-regular fa-bookmark"></i>';
 
-    $(event.target).parents(".check-box").append('<input type="checkbox">' + newTaskName);
+    $(event.target).parents(".check-box").append(
+        '<label for="favorite-'+ newTaskName +'" class="label-save '+ save +'">'+ saveItem +'</label><input type="checkbox" id="favorite-'+ newTaskName +'" class="favorite-check"><input type="checkbox"><span>' + newTaskName + '</span><q class="task-date">'+ date +'</q>'
+        );
     $(event.target).remove();
     updateLocalContent();
 }
@@ -380,6 +394,5 @@ function saveLater(element) {
             (tName == liName) ? task.save = status : task;
         });
     });
-
     updateLocalContent();
 }

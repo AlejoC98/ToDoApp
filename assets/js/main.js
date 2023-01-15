@@ -85,11 +85,13 @@ $(document).ready(function() {
 
     $("#searchTask").on("focus", function() {
         // Hidding all tasks
-        cleanTasks();
-    }).on("blur", function() {
-        loadListTasks();
+        if (event.target.value == "")
+            cleanTasks();
     }).on("keyup", function() {
-        searchTask(event.target.value);
+        if (event.target.value != "")
+            searchTask(event.target.value);
+        else
+            loadListTasks();
     });
 
     $("#dateFilter").on("change", function() {

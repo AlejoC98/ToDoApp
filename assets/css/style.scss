@@ -278,10 +278,18 @@ header {
     transition: 0.1s;
 }
 
-.modal .modal-footer {
-    display: flex;
-    justify-content: space-between;
+.modal {
+    
+    .modal-body {
+        padding-bottom: 35px !important;
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: space-between;
+    }
 }
+
 
 .row.tasks {
     margin-top: 30px;

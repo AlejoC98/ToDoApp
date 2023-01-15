@@ -227,6 +227,9 @@ header .menu a {
   transition: 0.1s;
 }
 
+.modal .modal-body {
+  padding-bottom: 35px !important;
+}
 .modal .modal-footer {
   display: flex;
   justify-content: space-between;
