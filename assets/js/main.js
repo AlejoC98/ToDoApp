@@ -66,4 +66,9 @@ $(document).ready(function() {
         }
     });
 
+    // When input is blur I will clean the input
+    $("input[type=text]").on("blur", function() {
+        $(this).val("");
+    });
+
 });

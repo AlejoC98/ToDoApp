@@ -103,15 +103,13 @@ function openMenuItem(element) {
                 listTask = element[listName];
     });
 
-    if (listTask.length > 0) {
-        currentList = listName;
-        // Checking if this list already has tasks
-        if (listTask.length > 0)
-            // Here i will have a loop
-            loadListTasks();
-        $("#listTitle").text(listName);
-        $(".right-panel").css("opacity", "100");
-    }
+    currentList = listName;
+    // Checking if this list already has tasks
+    if (listTask.length > 0)
+        // Here i will have a loop
+        loadListTasks();
+    $("#listTitle").text(listName);
+    $(".right-panel").css("opacity", "100");
 }
 
 function getDate() {
@@ -120,15 +118,15 @@ function getDate() {
 
 function createTask(input) {
 
-    var status = false;
+    var status = true;
 
     // Checking if object list containd the current list
     if (list = localContent.find((x) => Object.keys(x).includes(currentList) ))
         // Going through Task object
         list[currentList].map((task, index) => {
             // Checking if task already exist and returning and error
-            if (task.name != input.value)
-                status = true;
+            if (task.name == input.value)
+                status = false;
         });
     
     if (status == true) {
@@ -161,7 +159,7 @@ function editTask(task) {
     task.querySelector(".check-box").innerText = "";
 
 
-    $(task).find(".check-box").append('<input type="text" value="'+ currentTask +'" class="form-control">');
+    $(task).find(".check-box").append('<input type="text" value="'+ currentTask +'" class="form-control">').on("keypress", function() { updateTask(currentTask) });
 
 }
 
@@ -184,12 +182,9 @@ function updateTask(current) {
             newTaskName = current;
             resetSatus = true;
             break;
-            default:
-                break;
             }
             
     if (resetSatus == true)
-        taskEle.querySelector(".check-box").innerHTML = '<input type="checkbox" onclick="checkTask(\'task-'+ taskEle.id +'\')">' + newTaskName;
-    
+        taskEle.querySelector(".check-box").innerHTML = '<input type="checkbox">' + newTaskName;
 
 }
