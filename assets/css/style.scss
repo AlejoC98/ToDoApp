@@ -3,11 +3,14 @@
 // Global Variables
 $main-color: #19647E;
 $main-hover-color: #0e3c4b;
-$bg: #fbfdf6;
+$bg: #fafcf7;
 $btn-primary: #FF785A;
 $btn-primary-hover: #fd5731;
 $btn-secondary: #92140c;
 $btn-secondary-hover: #b31a0f;
+$btn-success: #2ec4b6;
+$btn-success-hover: #239287;
+$btn-warning: #F2BB05;
 
 // Base Classes Styles
 %li-element {
@@ -17,7 +20,7 @@ $btn-secondary-hover: #b31a0f;
 
     .check-box {
         input {
-            margin-right: 20px;
+            margin: 0 10px;
         }
     }
 }
@@ -41,6 +44,17 @@ $btn-secondary-hover: #b31a0f;
 
 .btn-theme-secondary:hover {
     background: $btn-secondary-hover;
+    color: #fff;
+}
+
+.btn-theme-success {
+    background: $btn-success;
+    border: $btn-success;
+    color: #fff;
+}
+
+.btn-theme-success:hover {
+    background: $btn-success-hover;
     color: #fff;
 }
 
@@ -94,7 +108,6 @@ header {
     }
 
     .task-list {
-        // overflow-x: hidden;
         margin-top: 60px;
         width: 100%;
         li {
@@ -150,6 +163,7 @@ header {
         a {
             text-decoration: none;
             color: #fff;
+            margin: 0 auto;
         }
     }
 
@@ -165,19 +179,22 @@ header {
     .welcome-ms {
         text-align: center;
         color: rgb(129, 129, 129);
-        height: 50vh;
+        height: 80vh;
         display: grid;
-        transition: 0,3s;
+        transition: 0.3s;
         align-items: center;
         h1 {
-            font-size: 90px;
+            font-size: 8vw;
+        }
+        h3 {
+            font-size: 3vw;
         }
 
     }
 
     .main {
         display: none;
-        transition: 0,3s;
+        transition: 0.3s;
     }
 
     .container-header {
@@ -206,6 +223,13 @@ header {
 
     li {
         @extend %li-element;
+    }
+
+    .task-date {
+        color: rgb(138, 138, 138);
+        font-size: 12px;
+        margin-left: 20px;
+        font-style: italic;
     }
 
     button {
@@ -264,8 +288,10 @@ header {
 }
 
 .completed {
-    text-decoration: line-through;
     color: rgb(134, 134, 134);
+    span {
+        text-decoration: line-through;
+    }
 }
 
 .bordered {
@@ -275,4 +301,24 @@ header {
 
 .fm-text {
     position: absolute;
+}
+
+.favorite-check {
+    display: none;
+}
+
+.label-save {
+    margin: 0 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+}
+
+.label-save:hover {
+    color: $btn-warning;
+    font-size: 17px;
+}
+
+.saved {
+    color: $btn-warning;
 }

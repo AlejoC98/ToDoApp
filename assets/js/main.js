@@ -59,7 +59,7 @@ $(document).ready(function() {
         $(this).val("");
     });
 
-    $("#taskList, #completedTaskList").on("click", "input[type=checkbox], .btn-delete, .btn-edit", function() {
+    $("#taskList, #completedTaskList").on("click", "input.check-status, .btn-delete, .btn-edit, input.favorite-check", function() {
 
         // Getting event target li parent
         var taskId = $(event.target).parents("li")[0];
@@ -74,23 +74,44 @@ $(document).ready(function() {
             case 'fa-solid fa-pencil':
                 editTask(taskId);
                 break;
+            case "favorite-check":
+                saveLater(event.target);
+                break;
             default:
                 checkTask(taskId);
                 break;
         }
     });
 
-    // Task search
     $("#searchTask").on("focus", function() {
         // Hidding all tasks
-        $(currentTaskEle).find("li").css("display", "none").addClass("bordered");
-        $(completedListEle).find("li").css("display", "none").addClass("bordered");
+        cleanTasks();
     }).on("blur", function() {
-        $(currentTaskEle).find("li").css("display", "flex").removeClass("bordered");
-        $(completedListEle).find("li").css("display", "flex").removeClass("bordered");
-        $(this).val("");
+        loadListTasks();
     }).on("keyup", function() {
         searchTask(event.target.value);
+    });
+
+    $("#dateFilter").on("change", function() {
+        // Hidding all tasks
+        cleanTasks();
+        searchTask(event.target.value, "date");
+    });
+
+    $("#reset-date").on("click", function() {
+        $("#dateFilter").val("");
+        loadListTasks();
+    });
+
+    $("#multi-filter").on("change", function() {
+        switch ($(event.target).find(":selected").val()) {
+            case "late":
+                searchTask("saved", "save");
+                break;
+            default:
+                loadListTasks();
+                break;
+        }
     });
 
 });

@@ -6,24 +6,36 @@ function updateLocalContent() {
     localStorage.setItem("Lists", JSON.stringify(localContent));
 }
 
-function createListEle(id, list, status = "", className = "") {
-    var element = '<li class="list-group-item animate__animated '+ className +'" id="task-'+ id +'">' +
+function createListEle(data, list, status = "", className = "") {
+
+    var saveItem;
+
+    (data.save === "saved") ? saveItem = '<i class="fa-solid fa-bookmark"></i>' : saveItem = '<i class="fa-regular fa-bookmark"></i>';
+
+    var element = '<li class="list-group-item animate__animated '+ className +'" id="task-'+ data.name +'">' +
         '<div class="check-box">' +
-        '<input '+ status +' type="checkbox" id="checkTask-'+ id +'">' +
-        id +
+        '<label for="favorite-'+ data.name +'" class="label-save '+ data.save +'">'+ saveItem +'</label>' +
+        '<input type="checkbox" id="favorite-'+ data.name +'" class="favorite-check">' +
+        '<input '+ status +' type="checkbox" class="check-status" id="checkTask-'+ data.name +'">' +
+        '<span>' +
+        data.name +
+        '</span>' +
+        '<q class="task-date">' +
+        data.date +
+        '</q>' +
         '</div>' +
         '<div class="action-btn">' +
-        '<button class="btn btn-delete" id="deleteTask-'+ id +'">' +
+        '<button class="btn btn-delete" id="deleteTask-'+ data.name +'">' +
         '<i class="fa-solid fa-xmark"></i>' +
         '</button>' +
-        '<button class="btn btn-edit" id="editTask-'+ id +'">' +
+        '<button class="btn btn-edit" id="editTask-'+ data.name +'">' +
         '<i class="fa-solid fa-pencil"></i>' +
         '</button>' +
         '</li>' +
         '</div>';
 
-    // document.querySelector(list).insertAdjacentHTML("afterbegin", element);
-    $(list).append(element);
+    if ($("#task-" + data.name).length <= 0)
+        $(list).append(element);
 }
 
 function createErrorMg(id, mg, color) {
@@ -115,6 +127,7 @@ function loadMenu() {
 }
 
 function loadListTasks() {
+    cleanTasks();
     localContent.find((task) => {
         if (currentList in task) 
             task[currentList].map((element, index) => {
@@ -128,7 +141,7 @@ function loadListTasks() {
                     ltask["status"] = "checked";
                     ltask["class"] = "completed";
                 }
-                createListEle(element.name, ltask["container"], ltask["status"], ltask["class"]);
+                createListEle(element, ltask["container"], ltask["status"], ltask["class"]);
             });
     });
 }
@@ -157,7 +170,8 @@ function openMenuItem(element) {
 }
 
 function getDate() {
-    return new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
+    return new Date().toLocaleDateString('fr-CA');
+    // return new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
 }
 
 function createTask(input) {
@@ -179,7 +193,8 @@ function createTask(input) {
         var task = {
             "name" : input.value,
             "status" : "active",
-            "date" : getDate()
+            "date" : getDate(),
+            "save" : "none"
         }
         // Updating localContent
         localContent.find((t) => {
@@ -188,7 +203,7 @@ function createTask(input) {
         });
     
         // Creating task li element
-        createListEle(task.name, "#taskList", "", "animate__backInDown animate__faster");
+        createListEle(task, "#taskList", "", "animate__backInDown animate__faster");
     
         // Updating localStorage
         updateLocalContent();
@@ -234,6 +249,8 @@ function deleteTask(taskEle) {
 
 function checkTask(taskEle) {
 
+    var eleText = $(taskEle).find("span").text().toLowerCase();
+
     var ltask = {
         "aClass": "animate__flipOutX",
         "rClass" : "animate__flipInX"
@@ -251,7 +268,7 @@ function checkTask(taskEle) {
         if (currentList in list)
             list[currentList].map((task, index) => {
                 var tName = task.name.toLowerCase();
-                (tName === $(taskEle).text().toLowerCase()) ? task.status = ltask["status"] : task;
+                (tName === eleText) ? task.status = ltask["status"] : task;
             });
     });
     $(taskEle).addClass(ltask["aClass"]).removeClass(ltask["rClass"]);
@@ -280,12 +297,51 @@ function updateTask(current, newTaskName, status = true) {
     updateLocalContent();
 }
 
-function searchTask(keyWord) {
+function cleanTasks() {
+    $(currentTaskEle).find("li").css("display", "none").remove();
+    $(completedListEle).find("li").css("display", "none").remove();
+}
+
+function searchTask(keyWord, filter = "name") {
     localContent.find((lists) => {
         if (currentList in lists)
             lists[currentList].map((task, index) => {
-                var tName = task.name.toLowerCase();
-                (tName.includes(keyWord.toLowerCase())) ? $("#task-"+task.name).fadeIn() : $("#task-"+task.name).fadeOut();
+                var tName = task[filter].toLowerCase();
+                var action;
+                var liElement = {
+                    "class" : "",
+                    "status" : ""
+                }
+
+                if (task.status == "active") {
+                    liElement["insertTo"] = currentTaskEle;
+                } else {
+                    liElement["insertTo"] = completedListEle;
+                    liElement["class"] = "completed";
+                    liElement["status"] = "checked";
+                }
+
+                switch (filter) {
+                    case "date":
+                    case "save":
+                        if (tName === keyWord)
+                            action = "create";
+                        else
+                            action = "remove";
+                        break;
+                    default:
+                        if (tName.includes(keyWord.toLowerCase()))
+                            action = "create";
+                        else
+                            action = "remove";
+                        break;
+                }
+
+                if (action == "create") 
+                    createListEle(task, liElement["insertTo"], liElement["status"], liElement["class"]);
+                else if (action == "remove")
+                    $("#task-"+task.name).fadeOut(1).remove();
+
             });
     });
 
@@ -300,5 +356,30 @@ function deleteList() {
     $(".modal-backdrop").remove();
     $(".main").css("display", "0");
     $("#list-" + currentList).fadeOut().remove();
+    updateLocalContent();
+}
+
+function saveLater(element) {
+    var liElement = $(element).parents("li");
+    var liName = $(element).attr("id").split("-")[1].toLowerCase();
+    var status;
+    $(liElement).find(".label-save").empty();
+    if($(element).is(":checked")) {
+        $(liElement).find(".label-save").addClass("saved");
+        $(liElement).find(".label-save").append('<i class="fa-solid fa-bookmark"></i>');
+        status = "saved";
+    } else {
+        $(liElement).find(".label-save").removeClass("saved");
+        $(liElement).find(".label-save").append('<i class="fa-regular fa-bookmark"></i>');
+        status = "none";
+    }
+
+    localContent.find((list) => {
+        list[currentList].map((task, index) => {
+            var tName = task.name.toLowerCase();
+            (tName == liName) ? task.save = status : task;
+        });
+    });
+
     updateLocalContent();
 }

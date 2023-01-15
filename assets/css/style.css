@@ -5,7 +5,7 @@
   justify-content: space-between;
 }
 .completed-task li .check-box input, .task-list li .check-box input {
-  margin-right: 20px;
+  margin: 0 10px;
 }
 
 .btn-theme-primary {
@@ -30,12 +30,23 @@
   color: #fff;
 }
 
+.btn-theme-success {
+  background: #2ec4b6;
+  border: #2ec4b6;
+  color: #fff;
+}
+
+.btn-theme-success:hover {
+  background: #239287;
+  color: #fff;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   font-family: "Rubik", sans-serif;
-  background-color: #fbfdf6;
+  background-color: #fafcf7;
 }
 
 header {
@@ -128,6 +139,7 @@ header .menu a {
 .left-panel .task-list a {
   text-decoration: none;
   color: #fff;
+  margin: 0 auto;
 }
 
 .right-panel {
@@ -140,17 +152,20 @@ header .menu a {
 .right-panel .welcome-ms {
   text-align: center;
   color: rgb(129, 129, 129);
-  height: 50vh;
+  height: 80vh;
   display: grid;
-  transition: 0, 3s;
+  transition: 0.3s;
   align-items: center;
 }
 .right-panel .welcome-ms h1 {
-  font-size: 90px;
+  font-size: 8vw;
+}
+.right-panel .welcome-ms h3 {
+  font-size: 3vw;
 }
 .right-panel .main {
   display: none;
-  transition: 0, 3s;
+  transition: 0.3s;
 }
 .right-panel .container-header {
   display: flex;
@@ -169,6 +184,12 @@ header .menu a {
   overflow-x: hidden;
 }
 
+.task-list .task-date {
+  color: rgb(138, 138, 138);
+  font-size: 12px;
+  margin-left: 20px;
+  font-style: italic;
+}
 .task-list button {
   color: rgb(136, 136, 136);
 }
@@ -216,8 +237,10 @@ header .menu a {
 }
 
 .completed {
-  text-decoration: line-through;
   color: rgb(134, 134, 134);
+}
+.completed span {
+  text-decoration: line-through;
 }
 
 .bordered {
@@ -227,6 +250,26 @@ header .menu a {
 
 .fm-text {
   position: absolute;
+}
+
+.favorite-check {
+  display: none;
+}
+
+.label-save {
+  margin: 0 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+}
+
+.label-save:hover {
+  color: #F2BB05;
+  font-size: 17px;
+}
+
+.saved {
+  color: #F2BB05;
 }
 
 /*# sourceMappingURL=style.css.map */
