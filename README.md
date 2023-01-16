@@ -13,7 +13,7 @@ To use this app you simply have to download the repository, once you have the fi
 
 //////////***** Where to find help *****//////////
 
-If you need help with this app contact my on GitHub, user AlejoC98.
+If you need help with this app contact me on GitHub, user AlejoC98.
 
 //////////***** Who maintains the project *****//////////
 
