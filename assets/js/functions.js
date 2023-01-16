@@ -427,7 +427,7 @@ function saveLater(element) {
 }
 
 function resizeEvent() {
-    if (document.documentElement.clientWidth <= 500) {
+    if (document.documentElement.clientWidth <= 750) {
         $(".fil-opt").appendTo("#collapseFilters .card-body");
         $("#btn-collapse-filter").css("display", "inline-block");
     } else {

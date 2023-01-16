@@ -280,13 +280,13 @@ header .menu a {
   margin-top: 10px;
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 767px) {
   .right-panel .task-container .list-action-btn {
     display: flex;
     justify-content: space-between;
   }
   .right-panel .task-container #listTitle {
-    text-align: center;
+    text-align: center !important;
     margin-bottom: 20px;
     font-size: 35px;
   }
@@ -295,23 +295,6 @@ header .menu a {
   }
   .right-panel .welcome-ms h3 {
     font-size: 6vw;
-  }
-}
-@media screen and (max-width: 375px) {
-  .right-panel .task-container .list-action-btn {
-    display: flex;
-    justify-content: space-between;
-  }
-  .right-panel .task-container #listTitle {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 35px;
-  }
-  .right-panel .welcome-ms h1 {
-    font-size: 12vw;
-  }
-  .right-panel .welcome-ms h3 {
-    font-size: 7vw;
   }
   li.list-group-item {
     padding: 8px 10px !important;
@@ -326,29 +309,16 @@ header .menu a {
     padding: 4px 8px;
   }
 }
+@media screen and (max-width: 375px) {
+  .right-panel .welcome-ms h1 {
+    font-size: 12vw;
+  }
+  .right-panel .welcome-ms h3 {
+    font-size: 7vw;
+  }
+}
 @media screen and (max-width: 320px) {
-  .right-panel .task-container .list-action-btn {
-    display: flex;
-    justify-content: space-between;
-  }
-  .right-panel .task-container #listTitle {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 35px;
-  }
-  li.list-group-item {
-    padding: 8px 10px !important;
-  }
-  li.list-group-item .check-box label {
-    margin: 0 5px 0 0 !important;
-  }
-  li.list-group-item .check-box .check-status {
-    margin: 0 5px !important;
-  }
-  li.list-group-item .check-box q {
-    margin-left: 5px;
-  }
-  li.list-group-item .action-btn button {
+  .right-panel li.list-group-item .action-btn button {
     padding: 0 5px;
   }
 }

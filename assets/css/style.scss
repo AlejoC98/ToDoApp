@@ -352,7 +352,7 @@ header {
 
 // Media queries for small devices
 
-@media screen and (max-width: 500px){
+@media screen and (max-width: 767px){
     .right-panel {
 
         .task-container {
@@ -363,7 +363,7 @@ header {
             }
 
             #listTitle {
-                text-align: center;
+                text-align: center !important;
                 margin-bottom: 20px;
                 font-size: 35px;
             }
@@ -375,36 +375,6 @@ header {
             }
             h3 {
                 font-size: 6vw;
-            }
-    
-        }
-    }
-}
-
-@media screen and (max-width: 375px){
-
-    .right-panel {
-
-        .task-container {
-
-            .list-action-btn {
-                display: flex;
-                justify-content: space-between;
-            }
-
-            #listTitle {
-                text-align: center;
-                margin-bottom: 20px;
-                font-size: 35px;
-            }
-        }
-
-        .welcome-ms {
-            h1 {
-                font-size: 12vw;
-            }
-            h3 {
-                font-size: 7vw;
             }
     
         }
@@ -430,45 +400,27 @@ header {
     }
 }
 
-@media screen and (max-width: 320px){
-
+@media screen and (max-width: 375px){
     .right-panel {
-
-        .task-container {
-
-            .list-action-btn {
-                display: flex;
-                justify-content: space-between;
+        .welcome-ms {
+            h1 {
+                font-size: 12vw;
             }
-
-            #listTitle {
-                text-align: center;
-                margin-bottom: 20px;
-                font-size: 35px;
+            h3 {
+                font-size: 7vw;
             }
+    
         }
     }
+}
 
-    li.list-group-item {
-        padding: 8px 10px !important;
-
-        .check-box {
-
-            label {
-                margin: 0 5px 0 0 !important;
-            }
-
-            .check-status {
-                margin: 0 5px !important;
-            }
-            q {
-                margin-left: 5px;
-            }
-        }
-
-        .action-btn {
-            button {
-                padding: 0 5px;
+@media screen and (max-width: 320px){
+    .right-panel {
+        li.list-group-item {
+            .action-btn {
+                button {
+                    padding: 0 5px;
+                }
             }
         }
     }
