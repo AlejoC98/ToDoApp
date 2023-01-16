@@ -17,8 +17,10 @@ else
 
 $(document).ready(function() {
 
+    // Call function to load the menu items
     loadMenu();
 
+    // Event for the hamburguer icon
     $("#menu-btn").on("click", function() {
         collapseMenu(event.currentTarget);
     });
@@ -28,6 +30,7 @@ $(document).ready(function() {
         $("#addTaskListModal").modal("toggle");
     });
 
+    // Event for the delete list button
     $("#deleteTaskListModal .btn-theme-primary").on("click", function() {
         deleteList();
     });
@@ -55,10 +58,12 @@ $(document).ready(function() {
             event.target.querySelector("input").value = "";
     });
 
+    // This event is just to clean the task input when it's unfocus.
     $("#newTask").on("blur", function() {
         $(this).val("");
     });
 
+    // This event is to catch the click on any of the task actions buttons
     $("#taskList, #completedTaskList").on("click", "input.check-status, .btn-delete, .btn-edit, input.favorite-check", function() {
 
         // Getting event target li parent
@@ -83,8 +88,9 @@ $(document).ready(function() {
         }
     });
 
+    // Event when the searcg bar is focus, when the user type any letter the search will start.
     $("#searchTask").on("focus", function() {
-        // Hidding all tasks
+        // Hidding all tasks to have a clean search
         if (event.target.value == "")
             cleanTasks();
     }).on("keyup", function() {
@@ -94,18 +100,24 @@ $(document).ready(function() {
             loadListTasks();
     });
 
+    // Event when the date filter has chnage and it will start the search
     $("#dateFilter").on("change", function() {
         // Hidding all tasks
         cleanTasks();
+        // Start the search
         searchTask(event.target.value, "date");
     });
 
-    $("#reset-date").on("click", function() {
+    // Event for the reset filter button
+    $("#reset-sort").on("click", function() {
         $("#dateFilter").val("");
+        // Load all task from zero
         loadListTasks();
     });
 
+    // Event for the select filter option
     $("#multi-filter").on("change", function() {
+        // Checking which option has been selected
         switch ($(event.target).find(":selected").val()) {
             case "late":
                 searchTask("saved", "save");

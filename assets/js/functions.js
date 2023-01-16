@@ -1,17 +1,18 @@
+// This fucntion is to update the localcontent from localstorage
 function getLocalInfo() {
     localContent = JSON.parse(localStorage.getItem("Lists"));
 }
-
+// This function use the localcontent to update localstorage
 function updateLocalContent() {
     localStorage.setItem("Lists", JSON.stringify(localContent));
 }
-
+// This function creates li elements, this is for the tasks
 function createListEle(data, list, status = "", className = "") {
 
     var saveItem;
-
+    // checking if the item to create has been saved
     (data.save === "saved") ? saveItem = '<i class="fa-solid fa-bookmark"></i>' : saveItem = '<i class="fa-regular fa-bookmark"></i>';
-
+    // li element structure with the information provided
     var element = '<li class="list-group-item animate__animated '+ className +'" id="task-'+ data.name +'">' +
         '<div class="check-box">' +
         '<label for="favorite-'+ data.name +'" class="label-save '+ data.save +'">'+ saveItem +'</label>' +
@@ -33,76 +34,16 @@ function createListEle(data, list, status = "", className = "") {
         '</button>' +
         '</li>' +
         '</div>';
-
+    // Checking if element already exist to do not create it
     if ($("#task-" + data.name).length <= 0)
         $(list).append(element);
 }
-
-function createErrorMg(id, mg, color) {
-    $(id).addClass("text-" + color).text(mg);
-    setTimeout(() => {
-        $(id).text("");
-    }, 4000);
-}
-
-function collapseMenu(btn) {
-    let btnHamburger;
-    if (localContent.length > 0) {
-        $(".left-panel, .right-panel").toggleClass("collapsed");
-        var nPosition;
-        $(panel).find("li").each(function (index, element) {
-            var liName = element.id.split("-")[1];
-            if ($(".left-panel").hasClass("collapsed"))
-                liName = liName[0].toUpperCase();
-            $(element).find("a").text(liName);
-        });
-    } else {
-        $(btn).addClass("animate__shakeX");
-        btnHamburger = btn;
-        setTimeout(() => {
-            $(btnHamburger).removeClass("animate__shakeX");
-        }, 1000);
-    }
-
-}
-
-function createList(listEle) {
-
-    var status = false;
-
-    var lName = $(listEle).text().toLowerCase();
-
-    if (localContent.length > 0)
-        localContent.find((list) => {
-            var listArray = Object.keys(list).map((l) => l.toLowerCase());
-            (lName in listArray) ? status = true : status;
-            // (!Object.keys(t).includes(list.value)) ? status = true : status;
-        });
-    else
-        status = true;
-
-    if (status == true) {
-        var insertItem = {};
-        insertItem[listEle.value] = [];
-        // Close Modal
-        $("#addTaskListModal").modal("toggle");
-        localContent.push(insertItem);
-        // Create Menu Item
-        createMenuItem([listEle.value], "animate__animated animate__bounceInDown");
-        // Updating localStorage
-        updateLocalContent();
-        listEle.value = "";
-    } else {
-       return status;
-    }
-}
-
+// Fucntion to create li element on the left panel
 function createMenuItem(list, className = "") {
-    // Looping the content to create a li for every item on the array
+    // Loop through the content to create a li for every item on the array
     for(l of list) {
-
         var dname;
-
+        // Checking if the panel is collapsed
         if ($(".left-panel").hasClass("collapsed"))
             dname = l[0].toUpperCase();
         else
@@ -115,13 +56,94 @@ function createMenuItem(list, className = "") {
     }
 }
 
+// Function to load messages for forms
+function createErrorMg(id, mg, color) {
+    // Add message text and color
+    $(id).addClass("text-" + color).text(mg);
+    // Setting up a time to remove the message after 4s
+    setTimeout(() => {
+        $(id).text("");
+    }, 4000);
+}
+// Collapse menu function
+function collapseMenu(btn) {
+    let btnHamburger;
+    // Checking if is there any data created
+    if (localContent.length > 0) {
+        // Toggle collapsed class on left panel element
+        $(".left-panel, .right-panel").toggleClass("collapsed");
+        // loop through all the li elements left panel
+        $(panel).find("li").each(function (index, element) {
+            // Getting li text
+            var liName = element.id.split("-")[1];
+            // Checking if the panel has the collapsed class
+            if ($(".left-panel").hasClass("collapsed"))
+                // Getting first letter of the li text and capitalize it
+                liName = liName[0].toUpperCase();
+            // Adding new name to lis element
+            $(element).find("a").text(liName);
+        });
+    } else {
+        // Add animation class to element
+        $(btn).addClass("animate__shakeX");
+        // Saving btn element for later
+        btnHamburger = btn;
+        setTimeout(() => {
+            // Remove animation class after 1s
+            $(btnHamburger).removeClass("animate__shakeX");
+        }, 1000);
+    }
+
+}
+// This fucntion is to create lists
+function createList(listEle) {
+    var status = false;
+    // Getting new list name
+    var lName = $(listEle).val().toLowerCase();
+    // Checking if there's local data
+    if (localContent.length > 0)
+        // Loop through all the local list
+        localContent.find((list) => {
+            // Getting all list's names
+            var listArray = Object.keys(list).map((l) => l.toLowerCase());
+            // Validating if list already exist
+            (lName in listArray) ? status = true : status;
+        });
+    else
+        status = true;
+    
+    // Checking status
+    if (status == true) {
+        var insertItem = {};
+        // Setting list content as empty array
+        insertItem[listEle.value] = [];
+        // Close Modal
+        $("#addTaskListModal").modal("toggle");
+        // Adding new list to local content
+        localContent.push(insertItem);
+        // Create Menu Item
+        createMenuItem([listEle.value], "animate__animated animate__bounceInDown");
+        // Updating localStorage
+        updateLocalContent();
+        // Cleaning new list input
+        listEle.value = "";
+    } else {
+        // Returning error message
+        return status;
+    }
+}
+
 function loadMenu() {
     var list = [];
-
+    // Checking if there's local Content
     if (localContent.length > 0) {
-        localContent.find((t) => {
-            for (let listItem in t) {
+        // Loop through local content
+        localContent.find((list) => {
+            // Loop through all the list's names
+            for (let listItem in list) {
+                // Checking if listItem is on variable list
                 if (!list.includes(listItem))
+                    // Adding listItem to list var
                     list.push(listItem);
             }
         });
@@ -130,12 +152,18 @@ function loadMenu() {
     }
 }
 
+// Fucntion to load List Tasks
 function loadListTasks() {
+    // Cleaning task container
     cleanTasks();
-    localContent.find((task) => {
-        if (currentList in task) 
-            task[currentList].map((element, index) => {
+    // Loop through local caontent
+    localContent.find((list) => {
+        // checking if the current list is on list
+        if (currentList in list)
+            // Loop through list tasks
+            list[currentList].map((element, index) => {
                 var ltask = {};
+                // Checking if the task is active or done
                 if (element.status == "active") {
                     ltask["container"] = currentTaskEle;
                     ltask["status"] = "";
@@ -145,11 +173,12 @@ function loadListTasks() {
                     ltask["status"] = "checked";
                     ltask["class"] = "completed";
                 }
+                // Creating task element
                 createListEle(element, ltask["container"], ltask["status"], ltask["class"]);
             });
     });
 }
-
+// Function to open the list content
 function openMenuItem(element) {
     var listName = element.currentTarget.id.split("-")[1];
     var listTask = [];
