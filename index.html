@@ -41,7 +41,7 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
-            <ul id="task_list" class="task-list">
+            <ul id="task_list" class="list-items">
             </ul>
         </div>
         <div class="right-panel collapsed container-fluid">
@@ -54,31 +54,48 @@
             <div class="main">
                 <div class="task-container">
                     <div class="container-header">
-                        <h1 id="listTitle"></h1>
-                        <div class="list-action-btn">
-                            <button class="btn btn-theme-success" type="button" id="reset-sort">Reset</button>
-                            <button class="btn btn-theme-secondary" data-bs-toggle="modal" data-bs-target="#deleteTaskListModal">Delete</button>
+                        <div class="row">
+                            <div class="col-xl-10 col-lg-9 col-md-8 col-sm-12 col-xs-12">
+                                <h1 id="listTitle"></h1>
+                            </div>
+                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12 col-xs-12">
+                                <div class="list-action-btn">
+                                    <button class="btn btn-theme-success" type="button" id="reset-sort">Reset</button>
+                                    <button class="btn btn-theme-primary" type="button" id="btn-collapse-filter">
+                                        Filters
+                                    </button>
+                                    <button class="btn btn-theme-secondary" data-bs-toggle="modal" data-bs-target="#deleteTaskListModal">Delete</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr>
-                    <div class="row">
-                        <div class="col">
+                    <div class="row filter-section">
+                        <!-- Filter options -->
+                        <div class="fil-opt col-md-3 col-sm-12 col-xs-12">
                             <input type="text" placeholder="Search Task..." class="form-control" id="searchTask">
                         </div>
-                        <div class="col">
+                        <div class="col-md-3 col-sm-12 col-xs-12">
                             <form action="/" id="newTaskForm">
                                 <input type="text" placeholder="Create Task.." class="form-control" id="newTask">
                                 <div class="form-text fm-text" id="newTaksMg"></div>
                             </form>
                         </div>
-                        <div class="col">
+                        <div class="fil-opt col-md-3 col-sm-12 col-xs-12">
                             <input type="date" class="form-control" aria-describedby="reset-date" id="dateFilter">
                         </div>
-                        <div class="col">
+                        <div class="fil-opt col-md-3 col-sm-12 col-xs-12">
                             <select id="multi-filter" class="form-control">
                                 <option value="" selceted>Filter By</option>
                                 <option value="late">View Later</option>
                             </select>
+                        </div>
+                        <!-- Collapse filter options -->
+                        <div class="col d-grid mt-10">
+                            <div class="collapse" id="collapseFilters">
+                                <div class="card card-body">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row tasks">

@@ -20,6 +20,16 @@ $(document).ready(function() {
     // Call function to load the menu items
     loadMenu();
 
+    // Checking scrren size event
+    resizeEvent();
+    $(window).resize(function () {
+        resizeEvent();
+    });
+
+    $("#btn-collapse-filter").on("click", function() {
+        $("#collapseFilters").collapse("toggle");
+    });
+
     // Event for the hamburguer icon
     $("#menu-btn").on("click", function() {
         collapseMenu(event.currentTarget);

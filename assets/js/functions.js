@@ -107,7 +107,7 @@ function createList(listEle) {
             // Getting all list's names
             var listArray = Object.keys(list).map((l) => l.toLowerCase());
             // Validating if list already exist
-            (lName in listArray) ? status = true : status;
+            (!listArray.includes(lName)) ? status = true : status;
         });
     else
         status = true;
@@ -115,6 +115,8 @@ function createList(listEle) {
     // Checking status
     if (status == true) {
         var insertItem = {};
+        // Capitalizing the list name
+        listEle.value = listEle.value[0].toUpperCase() + listEle.value.slice(1);
         // Setting list content as empty array
         insertItem[listEle.value] = [];
         // Close Modal
@@ -134,21 +136,19 @@ function createList(listEle) {
 }
 
 function loadMenu() {
-    var list = [];
+    var listCont = [];
     // Checking if there's local Content
     if (localContent.length > 0) {
         // Loop through local content
         localContent.find((list) => {
             // Loop through all the list's names
             for (let listItem in list) {
-                // Checking if listItem is on variable list
-                if (!list.includes(listItem))
-                    // Adding listItem to list var
-                    list.push(listItem);
+                // Adding listItem to list var
+                listCont.push(listItem);
             }
         });
         // Creating list li elements
-        createMenuItem(list);
+        createMenuItem(listCont);
     }
 }
 
@@ -424,4 +424,15 @@ function saveLater(element) {
         });
     });
     updateLocalContent();
+}
+
+function resizeEvent() {
+    if (document.documentElement.clientWidth <= 425) {
+        $(".fil-opt").appendTo("#collapseFilters .card-body");
+        $("#btn-collapse-filter").css("display", "inline-block");
+    } else {
+        $(".fil-opt").prependTo(".filter-section");
+        $("#btn-collapse-filter").css("display", "none");
+        $("#collapseFilters").collapse("hide");
+    }
 }
